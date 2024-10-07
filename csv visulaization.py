@@ -1,4 +1,3 @@
-import sys
 
 import csv
 import matplotlib.pyplot as plt
@@ -12,59 +11,48 @@ def column_to_array(filename, column_name):
     return np.array(column_data)
 
 
-#str_filename = input("Path to CSV file (no quotations): ")
-str_filename = 'mars_weather.csv'
+str_filename = input("Name of CSV file (no quotations): ")
 
 ###open file and intitialize csv reader###
 fh = open(str_filename)
 csv_reader = csv.reader(fh)
 
-#ind = input("Name of Independent(x-axis) column in CSV file: ")
-ind = "sol"
+ind = input("Name of Independent(x-axis) column in CSV file: ")
 x = column_to_array(str_filename, ind)
-x = x[::-1]
 dep = input("Name of dependent(y-axis) column in CSV file: ")
-#dep = "pressure"
 y = column_to_array(str_filename, dep)
-y = y[::-1]
 
 print(x)
 print(y)
 
 #allows user to craete axis/graph labels
-xlabel = "Martian Days Elapsed (sol)"
-#xlabel = input("X axis label: ")
+xlabel = input("X axis label: ")
 ylabel = input("Y axis label: ")
 title = input("Graph title: ")
 
-#xlim = list(input("Limit on x-axis in the form (a, b) (input (0, 0) if no limits): "))
-#ylim = list(input ("Limit on y-axis in the form (a, b) (input (0, 0) of no limits): "))
+#cehcks for errors in the independent data
+error = input("Are there errors in the data (Y or N): ")
+if error == "Y":
+    error_in = input("What are errors displayed as in CSV (ie. NaN): ")
+    error_out = float(input("How should errors be displayed in teh data (must be an number): "))
 
-#counting number of errors in the pressure data
-counter = -1
-for i in y:
-    counter += 1
-    if i == "NaN":
-        y[counter] = -100
+    #counting number of errors in the independent data
+    counter = -1
+    for i in y:
+        counter += 1
+        if i == "error_in":
+            y[counter] = error_out
 
 
 #changes entries into graphable values
 x = [float(i) for i in x]
 y = [float(i) for i in y]
 
+#plots data
 plt.scatter(x, y)
-#if xlim != (0, 0):
-#    plt.xlim(xlim)
-#if ylim != (0, 0):
-#    plt.ylim(ylim)
-
 plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.title(title)
-
-'''plt.xlabel("x")
-plt.ylabel("y")
-plt.title("title")'''
 
 plt.grid()
 
